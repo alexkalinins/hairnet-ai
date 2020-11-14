@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 import numpy as np
 import random
+from tqdm import tqdm
 import os
 
 from HairNet1 import HairNet1
@@ -10,7 +11,7 @@ from HairNet2 import HairNet2
 from HairNet3 import HairNet3
 
 # configuring for cuda
-device = torch.device('cuda:0') if torch.cuda.is_available() else torch.device('cpu')
+device = torch.device('cpu')
 print(f'using: {device}')
 
 # loading data
@@ -18,9 +19,10 @@ data = np.load('data.npy', allow_pickle=True)
 
 try:
     os.mkdir('models')
+    print('Created models directory')
 except Exception as e:
     # incase because dir exists
-    pass
+    print('Model directory likely exists')
 
 
 def split_train_test_data():
@@ -44,7 +46,9 @@ def split_train_test_data():
 
 
 # splitting data into training and testing
+print('splitting data into training and testing datasets')
 train_imgs, train_params, test_imgs, test_params = split_train_test_data()
+print('done')
 
 simple_loss_func = nn.L1Loss()  # loss function for analysis
 
@@ -79,8 +83,8 @@ def test(model, model_loss_func, size=32):
 
 
 def train(model, name, optimizer, model_loss_func):
-    BATCH_SIZE = 100
-    EPOCHS = 75  # the best will be selected before overfit
+    BATCH_SIZE = 20
+    EPOCHS = 20  # the best will be selected before overfit
 
     try:
         os.mkdir(f'models/{name}')
@@ -99,9 +103,9 @@ def train(model, name, optimizer, model_loss_func):
                 train_m_loss, train_s_loss = fwd_pass(model, optimizer, model_loss_func, batch_imgs, batch_params,
                                                       train=True)
 
-                # test every 9 steps; 6 times per epoch
-                if i % 9 == 0:
-                    test_m_loss, test_s_loss = test(model, model_loss_func, size=100)
+                # test every 135 steps; 2 times per epoch
+                if i % 135 == 0:
+                    test_m_loss, test_s_loss = test(model, model_loss_func, size=32)
 
                     # logging model progress:
                     file.write(
@@ -111,6 +115,7 @@ def train(model, name, optimizer, model_loss_func):
             # saving model every epoch
             pt_file_path = f'models/{name}/e{epoch}.pt'
             torch.save(model.state_dict(), pt_file_path)
+            print(f'Saved model after {epoch}th epoch')
 
 
 # creating models
@@ -127,11 +132,14 @@ hn2_optim = optim.Adam(hn2.parameters(), lr=0.001)
 hn3_optim = optim.Adam(hn3.parameters(), lr=0.001)
 
 # training models!
+print('Training model 1')
 train(hn1, 'HairNet1', hn1_optim, hn1_loss_func)
 print('Done training model 1')
 
+print('Training model 2')
 train(hn2, 'HairNet2', hn2_optim, hn2_loss_func)
 print('Done training model 2')
 
+print('Training model 3')
 train(hn3, 'HairNet3', hn3_optim, hn3_loss_func)
 print('Done training model 3')
