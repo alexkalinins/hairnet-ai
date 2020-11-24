@@ -1,3 +1,10 @@
 .ipynb_checkpoints
 .DS_Store
 .virtual_documents
+out.*
+data.npy
+img136.png
+/test/
+__pycache__/
+/models/gen1-and-gen2/trained-states/
+
