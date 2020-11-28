@@ -8,7 +8,7 @@ from HN3G1 import HN3G1
 
 
 MODEL_DIR = 'models/gen3/trained-state/'
-MODEL_SAVE = [MODEL_DIR+'ix0-e28.pt', MODEL_DIR+'ix1-e36.pt', MODEL_DIR+'ix2-e69.pt', MODEL_DIR+'ix3-e69.pt', MODEL_DIR+'ix4-e34.pt', MODEL_DIR+'ix1-e36.pt', MODEL_DIR+'ix6-e69.pt',MODEL_DIR+'ix7-e69.pt', MODEL_DIR+'ix8-e69.pt']  # would be a list of save files for all the models
+MODEL_SAVE = [MODEL_DIR+'ix0-e28.pt', MODEL_DIR+'ix1-e36.pt', MODEL_DIR+'ix2-e39.pt', MODEL_DIR+'ix3-e69.pt', MODEL_DIR+'ix4-e34.pt', MODEL_DIR+'ix5-e11.pt', MODEL_DIR+'ix6-e69.pt',MODEL_DIR+'ix7-e69.pt', MODEL_DIR+'ix8-e69.pt']  # would be a list of save files for all the models
 
 class Model:
     def __init__(self):
